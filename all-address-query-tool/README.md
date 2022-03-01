@@ -1,0 +1,1 @@
+This tool is used for querying all addresses of a chain (cosmos-sdk@v0.45.0)
