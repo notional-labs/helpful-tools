@@ -1,0 +1,9 @@
+[GITHUB]
+# example: d64761df071c2bf517ceb063b279432ed2f89c62
+github_token = 
+
+[DISCORD]
+# example: NzzwODazMjc3MTEzMdMxMDg4.Xp0tFA.UFH21gth751uam76fq8EOclSsEb
+discord_bot_token = 
+# comma separated list of channels
+channels_to_listen = 
