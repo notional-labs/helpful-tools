@@ -1,7 +1,10 @@
 import configparser
 import requests
 import commits
-from datetime import datetime, date, time 
+import github_events
+from datetime import datetime, date, time, timedelta
+import pytz
+from typing import Callable
 
 c = configparser.ConfigParser()
 c.read("config.ini", encoding='utf-8')
@@ -13,9 +16,9 @@ org = "notional-labs"
 
 def new_member_contribution_struct():
     return {
-        'commits' : 0,
+        'commits' : set(),
         'issues' : 0,
-        'pr' : 0,
+        'prs' : 0,
     }
 
 def get_all_repos_name(org):
@@ -64,10 +67,28 @@ def get_all_members(org):
     
     return members_list
 
-repos_list = get_all_repos_name(org)
-member_contributions = get_all_members(org)
+def query_member_contributions():
+    member_contributions = get_all_members(org)
 
-today_beginning = datetime.combine(date.today(), time()).isoformat()
-member_contributions = commits.retrieve_commits_all(org, today_beginning, repos_list, member_contributions)
+    start_utc = datetime.combine(date.today() - timedelta(30), time()).astimezone(pytz.UTC)
+    end_utc = datetime.combine(date.today() + timedelta(1), time()).astimezone(pytz.UTC)
 
-print(member_contributions)
+    active_repos = github_events.get_active_repos(org, start_utc, end_utc)
+
+    start_utc = datetime.combine(date.today() - timedelta(1), time()).astimezone(pytz.UTC)
+    end_utc = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
+
+    member_contributions = commits.retrieve_commits_all(org, start_utc, end_utc, active_repos, member_contributions)
+    #member_contributions = commits.retrieve_commits_one_repo(org, "ibc-go", start_utc, end_utc, member_contributions)
+    member_contributions = github_events.get_daily_events(org, start_utc, end_utc, member_contributions)
+    
+    print(commits.get_commits_length(member_contributions))
+
+def benchmark(func: Callable):
+    start_time = datetime.now().timestamp()
+    func()
+    total_execution_time = datetime.now().timestamp() - start_time
+
+    print("Total execution time in milliseconds = {}".format(total_execution_time * 1000))
+
+benchmark(query_member_contributions)
