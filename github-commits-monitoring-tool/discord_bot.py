@@ -32,6 +32,7 @@ def monitor_logic():
     member_contributions = github_monitor.query_member_contributions()
     message = data_output.pretty_print_details(member_contributions)
     message = data_output.time_print(message)
+    message = "THIS IS YESTERDAY REPORT\n\n{}".format(message)
     print("=== DONE REPORT ===")
 
     return message
@@ -56,7 +57,7 @@ async def report_output():
 @report_output.before_loop
 async def before_report_output():
     for _ in range(60*60*24):  # loop the whole day
-        if datetime.datetime.now().minute == 53:  # 24 hour format
+        if datetime.datetime.now().hour == 1:  # 24 hour format
             print("getting github info")
             return
         await asyncio.sleep(1)# wait a second before looping again. You can make it more 
