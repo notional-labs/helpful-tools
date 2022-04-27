@@ -21,8 +21,8 @@ Discord faucet bot for any blockchain based Cosmos
 ```bash
 apt update \
 && apt install -y python3-pip python3-venv git tmux \
-&& git clone https://github.com/notional-labs/cosmos-discord-faucet.git \
-&& cd github-commits-monitoring-tool \
+&& git clone https://github.com/notional-labs/helpful-tools.git \
+&& cd helpful-tools/github-commits-monitoring-tool \
 && python3 -m venv venv \
 && source venv/bin/activate \
 && pip3 install -r requirements.txt
@@ -34,17 +34,17 @@ apt update \
 ## How to run  
 Start monitoring bot
 ```
-tmux new -s discord_monitor_bot -d cd ~/cosmos-discord-faucet && source venv/bin/activate && python3 discord_faucet_bot.py
+tmux new -s discord_monitor_bot -d cd ~/helpful-tools/github-commits-monitoring-tool && source venv/bin/activate && python3 discord_bot.py
 ```  
   
 ### Alternatively, the bot can be run through systemd:  
-- If necessary, change the username and the path to the script folder in `discord-bot-monitor-github.service`  
+- If necessary, change the username and the path to the script folder in `discord-bot-monitor-github.service`
 
 - Start the service  
 ```
-ln -s $HOME/cosmos-discord-faucet/discord-faucet-bot.service /etc/systemd/system/ \
+ln -s $HOME/helpful-tools/github-commits-monitoring-tool/discord-bot-monitor-github.service /etc/systemd/system/ \
 && systemctl daemon-reload \
-&& systemctl enable discord-faucet-bot.service \
-&& systemctl start discord-faucet-bot.service \
-&& systemctl status discord-faucet-bot.service
+&& systemctl enable discord-bot-monitor-github.service \
+&& systemctl start discord-bot-monitor-github.service \
+&& systemctl status discord-bot-monitor-github.service
 ```  

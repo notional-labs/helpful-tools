@@ -1,0 +1,12 @@
+[Unit]
+Description="Discord github monitor bot"
+
+[Service]
+User=root
+WorkingDirectory=/root/helpful-tools/github-commits-monitoring-tool
+ExecStart=/root/helpful-tools/github-commits-monitoring-tool/venv/bin/python3 discord_bot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
