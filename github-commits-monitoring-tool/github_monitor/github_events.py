@@ -1,5 +1,6 @@
 import configparser
 from datetime import datetime
+from time import sleep
 from dateutil import parser
 import string
 import requests
@@ -21,6 +22,13 @@ def get_daily_events(org: string, start_utc: datetime, end_utc: datetime, member
         query = {'per_page':100, 'page':page_index}
         path = "https://api.github.com/orgs/{}/events".format(org)
         res = requests.get(path, params=query, headers=headers)
+
+        if res.status_code != 200:
+            if res.status_code == 422:
+                print("stop at {} with index = {}".format(org, page_index))
+            else: print("Error code: {} with text: {}".format(res.status_code, res.json()))
+            
+            break
 
         events = res.json()
 
@@ -47,6 +55,8 @@ def get_daily_events(org: string, start_utc: datetime, end_utc: datetime, member
             if event['type'] == 'PullRequestEvent': member_contributions = handle_pull_request_event(event, member_contributions)
         
         page_index += 1
+    
+    return member_contributions
 
 def handle_issue_comment_event(event, member_contributions: dict):
     member_contributions[event['actor']['login']]['issues'] += 1

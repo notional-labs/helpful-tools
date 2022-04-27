@@ -13,7 +13,7 @@ headers = {'Authorization': 'token {}'.format(GITHUB_TOKEN), 'Accept': 'applicat
 
 def retrieve_commits_one_repo(org, repo, start_utc: datetime, end_utc: datetime, member_contributions):
     
-    f = open("temp.txt", "a")
+    # f = open("temp.txt", "a")
 
     # get all branches of a repo
     branches = retrieve_branches_all(org, repo)
@@ -37,7 +37,7 @@ def retrieve_commits_one_repo(org, repo, start_utc: datetime, end_utc: datetime,
             
             #filter commit to recognized member of org
             for commit in all_commits:
-                f.write(json.dumps(commit) + '\n')
+                # f.write(json.dumps(commit) + '\n')
                 commit_author = commit['author']['login']
 
                 if commit_author not in member_contributions:
@@ -48,7 +48,7 @@ def retrieve_commits_one_repo(org, repo, start_utc: datetime, end_utc: datetime,
             
             page_index += 1
     
-    f.close()
+    # f.close()
     print("retrieve_commits_one_repo done in repo {}".format(repo))
 
     return member_contributions
