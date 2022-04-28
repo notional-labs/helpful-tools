@@ -7,7 +7,7 @@ def pretty_print_details(member_contributions : dict):
     issues_text = "ISSUEs: \n"
     prs_text = "PRs: \n"
 
-    personal_view = "====== PERSONAL VIEW ======\n"
+    personal_view = "|====== PERSONAL VIEW ======\n"
     personal_commits = ""
     
     for member_name in member_contributions.keys():

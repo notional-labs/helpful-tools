@@ -55,8 +55,8 @@ def query_member_contributions():
     start_utc = datetime.combine(date.today() - timedelta(1), time()).astimezone(pytz.UTC)
     end_utc = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
 
-    member_contributions = commits.retrieve_commits_all(org, start_utc, end_utc, active_repos, member_contributions)
-    #member_contributions = commits.retrieve_commits_one_repo(org, "ibc-go", start_utc, end_utc, member_contributions)
+    #member_contributions = commits.retrieve_commits_all(org, start_utc, end_utc, active_repos, member_contributions)
+    member_contributions = commits.retrieve_commits_one_repo(org, "ibc-go", start_utc, end_utc, member_contributions)
 
     for event_org in EVENT_ORGS:
         member_contributions = github_events.get_daily_events(event_org, start_utc, end_utc, member_contributions)

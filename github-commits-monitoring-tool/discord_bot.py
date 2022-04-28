@@ -33,9 +33,12 @@ def monitor_logic():
     message = data_output.pretty_print_details(member_contributions)
     message = data_output.time_print(message)
     message = "THIS IS YESTERDAY REPORT\n\n{}".format(message)
+    
+    message_packets = message.split("|")
+
     print("=== DONE REPORT ===")
 
-    return message
+    return message_packets
 
 async def executor(blocking_func: typing.Callable):
     func = functools.partial(blocking_func)
@@ -51,8 +54,9 @@ async def on_ready():
 @tasks.loop(hours=24)
 async def report_output():
     message_channel = bot.get_channel(LISTENING_CHANNEL)
-    message = await executor(monitor_logic)
-    await message_channel.send(message)
+    message_packets = await executor(monitor_logic)
+    for packet in message_packets:
+        await message_channel.send(packet)
 
 @report_output.before_loop
 async def before_report_output():
