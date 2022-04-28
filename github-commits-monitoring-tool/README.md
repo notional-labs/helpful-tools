@@ -2,16 +2,30 @@
 This is a collection of helpful tools
 
 # github-commits-monitoring-tool
-Discord faucet bot for any blockchain based Cosmos
+Discord monitor bot
 
 <details>
   <summary>List of available commands:</summary>
 
-1. temp  
-`$temp 1234`
+1. no commands
 
 </details>  
 
+## How it works?
+1. At exactly 1 am everyday, the code will be invoked and start gather member activities on github
+2. It will first query all members belong to notional-labs
+
+### A. Commits query
+1. It will query events (in close past) happened in notional-labs to determine active repositories
+2. It will go through each active repositories
+3. It will query all branches in a repo
+4. It will go through each branches in a repo and fetch all commits made in yesterday.
+5. It will update commits accordingly to each member of notional - labs
+
+### B. Issues and PRs query
+1. It will query all public events in these organizations: notional-labs, osmosis-labs, cosmos, scrtlabs
+2. It will filter all events related to notional-labs members and in yesterday
+3. It will update issues and prs accordingly to each member of notional - labs
 
 ## Requirements
 - python3.6+  
