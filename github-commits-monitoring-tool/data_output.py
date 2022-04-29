@@ -1,5 +1,4 @@
 import datetime
-from time import strftime, localtime
 
 def pretty_print_details(member_contributions : dict):
     compare_view = "====== COMPARE VIEW ======\n"
@@ -23,4 +22,4 @@ def pretty_print_details(member_contributions : dict):
 def time_print(str):
     LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return "current time = {} in Timezone GMT{}\n\n{}".format(current_time, LOCAL_TIMEZONE, str)
+    return "current time = {} in Timezone {}\n\n{}".format(current_time, LOCAL_TIMEZONE, str)
