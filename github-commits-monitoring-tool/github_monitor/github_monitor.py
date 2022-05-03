@@ -17,8 +17,8 @@ org = "notional-labs"
 def new_member_contribution_struct():
     return {
         'commits' : set(),
-        'issues' : 0,
-        'prs' : 0,
+        'issues' : set(),
+        'prs' : set(),
     }
 
 def get_all_members(org):
@@ -56,9 +56,9 @@ def query_member_contributions():
     end_utc = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
 
     member_contributions = commits.retrieve_commits_all(org, start_utc, end_utc, active_repos, member_contributions)
-    #member_contributions = commits.retrieve_commits_one_repo(org, "ibc-go", start_utc, end_utc, member_contributions)
+    #member_contributions = commits.retrieve_commits_one_repo(org, "anone", start_utc, end_utc, member_contributions)
 
     for event_org in EVENT_ORGS:
         member_contributions = github_events.get_daily_events(event_org, start_utc, end_utc, member_contributions)
     
-    return commits.get_commits_length(member_contributions)
+    return member_contributions

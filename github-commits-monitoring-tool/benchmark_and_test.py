@@ -12,6 +12,7 @@ def benchmark(func: Callable):
 
 def query_and_prints():
     member_contributions = github_monitor.query_member_contributions()
-    print(data_output.time_print(data_output.pretty_print_details(member_contributions)))
+    print(data_output.pretty_print_compare_view(member_contributions))
+    print(data_output.pretty_print_personal_view(member_contributions))
 
 benchmark(query_and_prints)

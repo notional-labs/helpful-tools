@@ -1,7 +1,6 @@
 import configparser
 from datetime import datetime
 import requests
-from copy import deepcopy
 import json
 
 c = configparser.ConfigParser()
@@ -83,12 +82,3 @@ def retrieve_commits_all(org, start_utc: datetime, end_utc: datetime, repos_list
     print("retrieve_commits_all done")
     
     return member_contributions
-
-# HELPER FUNCTIONS FOR EASIER PRINT
-def get_commits_length(member_contributions: dict):
-    member_contributions_with_commits_as_int = deepcopy(member_contributions)
-
-    for member_key in member_contributions.keys():
-        member_contributions_with_commits_as_int[member_key]['commits'] = len(member_contributions[member_key]['commits'])
-    
-    return member_contributions_with_commits_as_int

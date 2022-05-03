@@ -30,9 +30,10 @@ bot = commands.Bot("$")
 
 def monitor_logic():
     member_contributions = github_monitor.query_member_contributions()
-    message = data_output.pretty_print_details(member_contributions)
-    message = data_output.time_print(message)
-    message = "THIS IS YESTERDAY REPORT\n\n{}".format(message)
+    message_compare_view = data_output.pretty_print_compare_view(member_contributions)
+    message_personal_view = data_output.pretty_print_personal_view(member_contributions)
+    message_time = data_output.time_print()
+    message = "THIS IS YESTERDAY REPORT\n\n{}\n\n{}\n\n{}|{}".format(message, message_time, message_compare_view, message_personal_view)
     
     message_packets = message.split("|")
 

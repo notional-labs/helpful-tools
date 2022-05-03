@@ -59,17 +59,29 @@ def get_daily_events(org: string, start_utc: datetime, end_utc: datetime, member
     return member_contributions
 
 def handle_issue_comment_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['issues'] += 1
+    # get link of issue
+    link = event['payload']['issue']['html_url']
+
+    if 'pull_request' in event['payload']['issue']:
+        member_contributions[event['actor']['login']]['prs'].add(link)
+    else:
+        member_contributions[event['actor']['login']]['issues'].add(link)
 
     return member_contributions
 
 def handle_issue_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['issues'] += 1
+    # get link of issue
+    link = event['payload']['issue']['html_url']
+
+    member_contributions[event['actor']['login']]['issues'].add(link)
 
     return member_contributions
 
 def handle_pull_request_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['prs'] += 1
+    # get link of issue
+    link = event['payload']['pull_request']['html_url']
+
+    member_contributions[event['actor']['login']]['prs'].add(link)
 
     return member_contributions
 
