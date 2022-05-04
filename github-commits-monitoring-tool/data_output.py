@@ -16,14 +16,13 @@ def pretty_print_compare_view(member_contributions : dict):
         issues_text += "{}: {} \n".format(prepared_member_contributions[member_name]['issues'], member_name)
         prs_text += "{}: {} \n".format(prepared_member_contributions[member_name]['prs'], member_name)
     
-
     return "{}{}\n\n{}\n\n{}".format(compare_view, commits_text, issues_text, prs_text)
 
 def pretty_print_personal_view(member_contributions : dict):
 
     prepared_member_contributions = get_commits_length(member_contributions)
 
-    personal_view = "|====== PERSONAL VIEW ======\n"
+    personal_view = "====== PERSONAL VIEW ======\n"
     personal = ""
 
     for member_name in prepared_member_contributions.keys():
@@ -39,7 +38,7 @@ def pretty_print_personal_view(member_contributions : dict):
         for pr in personal_prs:
             personal_prs_print += "        * {}\n".format(pr)
 
-        personal += "{}:  \n     COMMITs:{}\n     ISSUEs:{}\n     PRs:{}\n".format(member_name, prepared_member_contributions[member_name]['commits'], personal_issues_print, personal_prs_print)
+        personal += "{}:  \n     COMMITs:{}\n     ISSUEs:{}\n     PRs:{}\n\n|".format(member_name, prepared_member_contributions[member_name]['commits'], personal_issues_print, personal_prs_print)
     
     return "{}{}".format(personal_view, personal)
 

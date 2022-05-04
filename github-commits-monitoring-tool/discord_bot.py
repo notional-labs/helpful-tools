@@ -33,7 +33,7 @@ def monitor_logic():
     message_compare_view = data_output.pretty_print_compare_view(member_contributions)
     message_personal_view = data_output.pretty_print_personal_view(member_contributions)
     message_time = data_output.time_print()
-    message = "THIS IS YESTERDAY REPORT\n\n{}\n\n{}\n\n{}|{}".format(message, message_time, message_compare_view, message_personal_view)
+    message = "THIS IS YESTERDAY REPORT\n\n{}\n\n{}|{}".format(message_time, message_compare_view, message_personal_view)
     
     message_packets = message.split("|")
 
@@ -57,12 +57,16 @@ async def report_output():
     message_channel = bot.get_channel(LISTENING_CHANNEL)
     message_packets = await executor(monitor_logic)
     for packet in message_packets:
+
+        if packet == "":
+            continue
+
         await message_channel.send(packet)
 
 @report_output.before_loop
 async def before_report_output():
     for _ in range(60*60*24):  # loop the whole day
-        if datetime.datetime.now().hour == 1:  # 24 hour format
+        if datetime.datetime.now().hour == 9:  # 24 hour format
             print("getting github info")
             return
         await asyncio.sleep(1)# wait a second before looping again. You can make it more 
