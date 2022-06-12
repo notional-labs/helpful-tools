@@ -12,7 +12,7 @@ import functools
 
 # Turn Down Discord Logging
 disc_log = logging.getLogger('discord')
-disc_log.setLevel(logging.INFO)
+disc_log.setLevel(logging.DEBUG)
 
 # Configure Logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -29,7 +29,7 @@ client = discord.Client()
 bot = commands.Bot("$")
 
 def monitor_logic():
-    member_contributions = github_monitor.query_member_contributions()
+    member_contributions = github_monitor.queryContributions()
     message_compare_view = data_output.pretty_print_compare_view(member_contributions)
     message_personal_view = data_output.pretty_print_personal_view(member_contributions)
     message_time = data_output.time_print()
@@ -57,10 +57,8 @@ async def report_output():
     message_channel = bot.get_channel(LISTENING_CHANNEL)
     message_packets = await executor(monitor_logic)
     for packet in message_packets:
-
         if packet == "":
             continue
-
         await message_channel.send(packet)
 
 @report_output.before_loop

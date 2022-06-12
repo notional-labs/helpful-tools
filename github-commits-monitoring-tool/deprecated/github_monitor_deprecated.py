@@ -6,7 +6,10 @@ c.read("config.ini", encoding='utf-8')
 
 GITHUB_TOKEN = str(c["GITHUB"]["github_token"])
 
-headers = {'Authorization': 'token {}'.format(GITHUB_TOKEN), 'Accept': 'application/vnd.github.v3+json'}
+headers = {
+    'Authorization': 'token {}'.format(GITHUB_TOKEN), 
+    'Accept': 'application/vnd.github.v3+json'
+}
 org = "notional-labs"
 
 def get_all_repos_name(org):

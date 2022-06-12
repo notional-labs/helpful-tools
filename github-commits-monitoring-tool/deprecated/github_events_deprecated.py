@@ -10,9 +10,12 @@ c.read("config.ini", encoding='utf-8')
 
 GITHUB_TOKEN = str(c["GITHUB"]["github_token"])
 
-headers = {'Authorization': 'token {}'.format(GITHUB_TOKEN), 'Accept': 'application/vnd.github.v3+json'}
+headers = {
+    'Authorization': 'token {}'.format(GITHUB_TOKEN), 
+    'Accept': 'application/vnd.github.v3+json'
+}
 
-def get_daily_events(org: string, start_utc: datetime, end_utc: datetime, member_contributions: dict):
+def getRepoEvents(org: string, startTime: datetime, endTime: datetime, member_contributions: dict):
     
     page_index = 1
     f = open("temp.txt", "a")
@@ -29,10 +32,10 @@ def get_daily_events(org: string, start_utc: datetime, end_utc: datetime, member
             # check time of event
             event_create_date = parser.isoparse(event['created_at'])
 
-            if event_create_date >= end_utc:
+            if event_create_date >= endTime:
                 continue
 
-            if event_create_date < start_utc:
+            if event_create_date < startTime:
                 f.close()
                 return member_contributions
 
