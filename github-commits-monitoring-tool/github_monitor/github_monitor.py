@@ -35,16 +35,13 @@ def fetchMembers(org):
     while True:
         query = {
             'per_page':100, 
-            'page':page
+            'page': page
         }
         response = requests.get("https://api.github.com/orgs/{}/members".format(org), params=query, headers=headers).json()
-        print(response)
-        print(headers)
         if len(response) == 0:
             break
         else:
             for member in response:
-                print(member)
                 members[member["login"]] = contribution
             page += 1
     
@@ -53,18 +50,18 @@ def fetchMembers(org):
 
 def queryContributions():
     members = fetchMembers(org)
-
     # get all Notional active repos within 1 month
     startTime = datetime.combine(date.today() - timedelta(30), time()).astimezone(pytz.UTC)
     endTime = datetime.combine(date.today() + timedelta(1), time()).astimezone(pytz.UTC)
     activeRepos = github_events.getActiveRepos(org, startTime, endTime)
     print("Fetched {} repos".format(len(activeRepos)))
+
     # get all commits in 1 day
     startTime = datetime.combine(date.today() - timedelta(1), time()).astimezone(pytz.UTC)
     endTime = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
     for member in members:
-        (members[member]["commits"], members[member]["activeRepos"]) = commits.getCommits(orgs, startTime, endTime, activeRepos, member, members[member]["commits"], members[member]["activeRepos"])
-        print(members[member])
+        members[member]["commits"], members[member]["activeRepos"] = commits.getCommits(orgs, startTime, endTime, activeRepos, member)
+        print(member, members[member])
         print()
 
     # get ISSUE and PULL REQUEST data

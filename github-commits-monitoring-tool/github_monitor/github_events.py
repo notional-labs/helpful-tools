@@ -39,8 +39,8 @@ def getUserEvents(orgs, startTime: datetime, endTime: datetime, member):
                     break
                 else:
                     if "org" in event.keys():
+                        print(event["org"]["login"], event["type"])
                         if event["org"]["login"] in orgs:
-                            print(event["org"]["login"])
                             events.append(event)
 
             page += 1
@@ -136,7 +136,6 @@ def getActiveRepos(org: string, startTime: datetime, endTime: datetime):
             break
 
         for event in events:
-            #f.write(json.dumps(event) + '\n')
             # check time of event
             createdDate = parser.isoparse(event['created_at'])
 
@@ -145,7 +144,7 @@ def getActiveRepos(org: string, startTime: datetime, endTime: datetime):
             elif createdDate < startTime:
                 continue
             else:
-                repo_name = event['repo']['name'].split('/')[1]
+                repo_name = event['repo']['name']
                 repos.add(repo_name)
 
         page += 1

@@ -13,12 +13,24 @@ headers = {
     'Authorization': 'token {}'.format(GITHUB_TOKEN), 
     'Accept': 'application/vnd.github.v3+json'
 }
-    
-def getCommits(orgs, startTime: datetime, endTime: datetime, repos, member, commits, activeRepo):
-    # inNotional("notional-labs", startTime, endTime, repos, member, activeRepo, value)
-    (commits, activeRepo) = notinNotional(orgs, startTime, endTime, member, activeRepo, commits)
+commits = {
+    "count": 0,
+    "sha": []
+}
+activeRepo = set()
+
+def getCommits(orgs, startTime: datetime, endTime: datetime, repos, member):
+    global commits, activeRepo
+    commits = {
+        "count": 0,
+        "sha": []
+    }
+    activeRepo = set()
+
+    # inNotional("notional-labs", startTime, endTime, repos, member)
+    notinNotional(orgs, startTime, endTime, member)
     print("get commits history for {} done".format(member))
-    return (commits, activeRepo)
+    return commits, activeRepo
 
 def getBranches(org, repo):
     page_index = 1
@@ -37,7 +49,9 @@ def getBranches(org, repo):
     print("Get branches of {} done".format(repo))
     return branches
 
-def inNotional(org, startTime: datetime, endTime: datetime, repos, member, activeRepo, value):
+def inNotional(org, startTime: datetime, endTime: datetime, repos, member):
+    global commits, activeRepo
+
     for repo in repos:
         branches = getBranches(org, repo)
 
@@ -56,7 +70,7 @@ def inNotional(org, startTime: datetime, endTime: datetime, repos, member, activ
                 if res.status_code != 200:
                     print("ERROR: fail to fetch repo = {} and branch = {}".format(repo, branch))
                     # log error to bot
-                    return value
+                    return commits
                 else:
                     commits = res.json()
                     if len(commits) == 0:
@@ -67,24 +81,26 @@ def inNotional(org, startTime: datetime, endTime: datetime, repos, member, activ
                         if author != member:
                             continue
                         else:
-                            value['count'] = value['count'] + 1
-                            value['sha'].append(commit['sha'])
+                            commits['count'] = commits['count'] + 1
+                            commits['sha'].append(commit['sha'])
                     
                     page_index += 1
 
-        if (value['count']):
+        if (commits['count']):
             activeRepo.add(repo)
     print("get commit in Notional for {} done".format(member))
 
-def notinNotional(orgs, startTime: datetime, endTime: datetime, member, activeRepo, value):
+def notinNotional(orgs, startTime: datetime, endTime: datetime, member):
+    global commits, activeRepo
+
     events = getUserEvents(orgs, startTime, endTime, member)
     for event in events:
         if event["type"] == "PushEvent":
             for commit in event["payload"]["commits"]:
-                if commit["distinct"] == "true":
-                    value['count'] = value['count'] + 1
-                    value['sha'].append(commit['sha'])
+                print(commit)
+                if commit["distinct"] == True:
+                    commits['count'] = commits['count'] + 1
+                    commits['sha'].append(commit['sha'])
         
-            activeRepo.add(event['repo']['name'].split('/')[1])
+            activeRepo.add(event['repo']['name'])
     print("get commit not in Notional for {} done".format(member))
-    return (value, activeRepo)
