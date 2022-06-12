@@ -16,12 +16,17 @@ Discord monitor bot
 2. It will first query all members belong to notional-labs
 
 ### A. Commits query
-1. It will query events (in close past) happened in notional-labs to determine active repositories
-2. It will go through each active repositories
-3. It will query all branches in a repo
-4. It will go through each branches in a repo and fetch all commits made in yesterday.
-5. It will update commits accordingly to each member of notional - labs
-
+There are 2 ways to query all contributions of Notional's members in notional-labs and other orgs:
+#### 1. Notional repos
+  - All active repos of Notional within ONE day will be collected
+  - The bot will go through each repo above, and get all branches
+  - The bot will count all commits of Notional members in each repo beyond the branches.
+  - The bot will save the data of:
+    * Total number of commits of each member
+    * Active repos and branches that member is working in
+#### 2. Other org
+  - The bot will scan and filter all events of Notional members in these orgs: **scrtlabs**, **osmosis-labs**, **cosmos**
+  - All `PushEvent` events will be saved, because it contains commits of contributors
 ### B. Issues and PRs query
 1. It will query all public events in these organizations: notional-labs, osmosis-labs, cosmos, scrtlabs
 2. It will filter all events related to notional-labs members and in yesterday
