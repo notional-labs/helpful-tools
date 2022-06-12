@@ -1,3 +1,4 @@
 config.ini
 temp.py
 __pycache__
+venv/

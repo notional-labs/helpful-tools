@@ -16,6 +16,7 @@ headers = {
     'Authorization': 'token {}'.format(GITHUB_TOKEN), 
     'Accept': 'application/vnd.github.v3+json'
 }
+
 org = "notional-labs"
 
 def fetchMembers(org):
@@ -37,11 +38,13 @@ def fetchMembers(org):
             'page':page
         }
         response = requests.get("https://api.github.com/orgs/{}/members".format(org), params=query, headers=headers).json()
-
+        print(response)
+        print(headers)
         if len(response) == 0:
             break
         else:
             for member in response:
+                print(member)
                 members[member["login"]] = contribution
             page += 1
     
