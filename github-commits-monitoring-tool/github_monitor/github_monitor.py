@@ -1,7 +1,7 @@
 import configparser
 import requests
-import commits 
-import github_events
+import github_monitor.commits as commits
+import github_monitor.github_events as github_events
 from datetime import datetime, date, time, timedelta
 import pytz
 
