@@ -1,9 +1,7 @@
 import configparser
 from datetime import datetime
 from github_events import getUserEvents
-import re
 import requests
-import json
 
 c = configparser.ConfigParser()
 c.read("config.ini", encoding = 'utf-8')
@@ -97,7 +95,6 @@ def notinNotional(orgs, startTime: datetime, endTime: datetime, member):
     for event in events:
         if event["type"] == "PushEvent":
             for commit in event["payload"]["commits"]:
-                print(commit)
                 if commit["distinct"] == True:
                     commits['count'] = commits['count'] + 1
                     commits['sha'].append(commit['sha'])

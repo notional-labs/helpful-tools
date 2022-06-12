@@ -29,11 +29,12 @@ client = discord.Client()
 bot = commands.Bot("$")
 
 def monitor_logic():
-    member_contributions = github_monitor.queryContributions()
-    message_compare_view = data_output.pretty_print_compare_view(member_contributions)
-    message_personal_view = data_output.pretty_print_personal_view(member_contributions)
+    memberContributions = github_monitor.queryContributions()
+    compareView = data_output.compareView(memberContributions)
+    detailView = data_output.detailView(memberContributions)
+
     message_time = data_output.time_print()
-    message = "THIS IS YESTERDAY REPORT\n\n{}\n\n{}|{}".format(message_time, message_compare_view, message_personal_view)
+    message = "THIS IS YESTERDAY REPORT\n\n{}\n\n{}".format(message_time, compareView, detailView)
     
     message_packets = message.split("|")
 

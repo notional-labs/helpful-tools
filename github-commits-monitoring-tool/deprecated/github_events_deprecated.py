@@ -15,7 +15,7 @@ headers = {
     'Accept': 'application/vnd.github.v3+json'
 }
 
-def getRepoEvents(org: string, startTime: datetime, endTime: datetime, member_contributions: dict):
+def getRepoEvents(org: string, startTime: datetime, endTime: datetime, memberContributions: dict):
     
     page_index = 1
     f = open("temp.txt", "a")
@@ -37,22 +37,22 @@ def getRepoEvents(org: string, startTime: datetime, endTime: datetime, member_co
 
             if event_create_date < startTime:
                 f.close()
-                return member_contributions
+                return memberContributions
 
             f.write(json.dumps(event) + '\n')
                 
-            # check if actor is in member_contributions
-            if event['actor']['login'] not in member_contributions:
+            # check if actor is in memberContributions
+            if event['actor']['login'] not in memberContributions:
                 continue
 
-            if event['type'] == 'PushEvent': member_contributions = handle_push_event(event, member_contributions)
-            if event['type'] == 'IssueCommentEvent': member_contributions = handle_issue_comment_event(event, member_contributions)
-            if event['type'] == 'IssuesEvent': member_contributions = handle_issue_event(event, member_contributions)
-            if event['type'] == 'PullRequestEvent': member_contributions = handle_pull_request_event(event, member_contributions)
+            if event['type'] == 'PushEvent': memberContributions = handle_push_event(event, memberContributions)
+            if event['type'] == 'IssueCommentEvent': memberContributions = handle_issue_comment_event(event, memberContributions)
+            if event['type'] == 'IssuesEvent': memberContributions = handle_issue_event(event, memberContributions)
+            if event['type'] == 'PullRequestEvent': memberContributions = handle_pull_request_event(event, memberContributions)
         
         page_index += 1
 
-def handle_push_event(event, member_contributions: dict):
+def handle_push_event(event, memberContributions: dict):
     commits = event['payload']['commits']
 
     for commit in commits:
@@ -62,21 +62,21 @@ def handle_push_event(event, member_contributions: dict):
 
         # add commits
         commit_sha = '{}/{}'.format(event['repo']['name'], commit['sha'])
-        member_contributions[event['actor']['login']]['commits'].add(commit_sha)
+        memberContributions[event['actor']['login']]['commits'].add(commit_sha)
 
-    return member_contributions
+    return memberContributions
 
-def handle_issue_comment_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['issues'] += 1
+def handle_issue_comment_event(event, memberContributions: dict):
+    memberContributions[event['actor']['login']]['issues'] += 1
 
-    return member_contributions
+    return memberContributions
 
-def handle_issue_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['issues'] += 1
+def handle_issue_event(event, memberContributions: dict):
+    memberContributions[event['actor']['login']]['issues'] += 1
 
-    return member_contributions
+    return memberContributions
 
-def handle_pull_request_event(event, member_contributions: dict):
-    member_contributions[event['actor']['login']]['prs'] += 1
+def handle_pull_request_event(event, memberContributions: dict):
+    memberContributions[event['actor']['login']]['prs'] += 1
 
-    return member_contributions
+    return memberContributions

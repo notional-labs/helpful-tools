@@ -1,9 +1,7 @@
 import configparser
 import requests
-# import github_monitor.commits as commits
 import commits 
 import github_events
-# import github_monitor.github_events as github_events
 from datetime import datetime, date, time, timedelta
 import pytz
 
@@ -22,15 +20,6 @@ org = "notional-labs"
 def fetchMembers(org):
     members = dict()
     page = 1
-    contribution = {
-        "commits": {
-            "count": 0,
-            "sha": []
-        },
-        "issues": [],
-        "prs": [],
-        "activeRepos": set()
-    }
 
     while True:
         query = {
@@ -42,13 +31,22 @@ def fetchMembers(org):
             break
         else:
             for member in response:
-                members[member["login"]] = contribution
+                members[member["login"]] = {
+                    "commits": {
+                        "count": 0,
+                        "sha": []
+                    },
+                    "issues": [],
+                    "prs": [],
+                    "activeRepos": set()
+                }
             page += 1
     
     print("Fetched {} members".format(len(members)))
     return members
 
 def queryContributions():
+
     members = fetchMembers(org)
     # get all Notional active repos within 1 month
     startTime = datetime.combine(date.today() - timedelta(30), time()).astimezone(pytz.UTC)
@@ -59,15 +57,39 @@ def queryContributions():
     # get all commits in 1 day
     startTime = datetime.combine(date.today() - timedelta(1), time()).astimezone(pytz.UTC)
     endTime = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
+
+    print(members)
     for member in members:
         members[member]["commits"], members[member]["activeRepos"] = commits.getCommits(orgs, startTime, endTime, activeRepos, member)
-        print(member, members[member])
-        print()
 
-    # get ISSUE and PULL REQUEST data
-    # for org in orgs:
-    #    members = github_events.getRepoEvents(org, startTime, endTime, members)
+        # get ISSUE and PULL REQUEST data
+        members[member]["issues"], members[member]["prs"], activeRepo = github_events.getIssuesandPR(orgs, startTime, endTime, member)
+        members[member]["activeRepos"].update(activeRepo)
+        if member == "lichdu29":
+            members[member]["commits"]["count"] += 2
+            members[member]["commits"]["sha"].append(["75e05ec3d370c36141ba74c8b47669cc3f37ab8a", "bdd9006753ef0cff9ab4c24cc2206c058568b700"])
+        print(members[member])
+        print()
     
     return members
+def main():
+    members = queryContributions()
+    personal_view = "     ====== PERSONAL VIEW ======\n"
+    data = ""
 
-queryContributions()
+    for member in members:
+        data = data + " - {}: \n    * Commits: {}\n    * Issues:\n".format(member, members[member]["commits"]["count"])
+        issue = pr = repo = ""
+        for i in members[member]["issues"]:
+            issue = issue + "       + {}\n".format(i)
+        data = data + issue + "    * Pull Requests:\n"
+        for i in members[member]["prs"]:
+            pr = pr + "       + {}\n".format(i)
+        data = data + pr + "    * Active Repos:\n"
+        for i in members[member]["activeRepos"]:
+            repo = repo + "       + {}\n".format(i)
+        data = data + repo + "\n"
+    print("{}{}".format(personal_view, data))
+    return "{}{}".format(personal_view, data)
+
+main()

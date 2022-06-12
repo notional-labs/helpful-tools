@@ -11,8 +11,8 @@ def benchmark(func: Callable):
     print("Total execution time in milliseconds = {}".format(total_execution_time * 1000))
 
 def query_and_prints():
-    member_contributions = github_monitor.queryContributions()
-    print(data_output.pretty_print_compare_view(member_contributions))
-    print(data_output.pretty_print_personal_view(member_contributions))
+    memberContributions = github_monitor.queryContributions()
+    print(data_output.compareView(memberContributions))
+    print(data_output.detailView(memberContributions))
 
 benchmark(query_and_prints)
