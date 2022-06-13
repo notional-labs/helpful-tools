@@ -1,5 +1,6 @@
 import configparser
 from datetime import datetime
+from lzma import PRESET_EXTREME
 from dateutil import parser
 import string
 import requests
@@ -38,7 +39,6 @@ def getUserEvents(orgs, startTime: datetime, endTime: datetime, member):
                 else:
                     if "org" in event.keys():
                         if event["org"]["login"] in orgs:
-                            print(event["org"]["login"], event["type"])
                             events.append(event)
 
             page += 1
@@ -87,7 +87,8 @@ def getActiveRepos(org: string, startTime: datetime, endTime: datetime):
     return repos
 
 def getIssuesandPR(orgs, startTime: datetime, endTime: datetime, member):
-    issues = prs = []
+    issues = []
+    prs = []
     activeRepos = set()
     events = getUserEvents(orgs, startTime, endTime, member)
     for event in events:
