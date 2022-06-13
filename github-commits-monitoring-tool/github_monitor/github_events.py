@@ -93,10 +93,10 @@ def getIssuesandPR(orgs, startTime: datetime, endTime: datetime, member):
     events = getUserEvents(orgs, startTime, endTime, member)
     for event in events:
         if event["type"] == "IssuesEvent" or event["type"] == "IssueCommentEvent":
-            issues.append(event["payload"]["issue"]["url"])
+            issues.append(event["payload"]["issue"]["html_url"])
             activeRepos.add(event['repo']['name'])
         elif event["type"] == "PullRequestEvent" or event["type"] == "PullRequestReviewEvent" or event["type"] == "PullRequestReviewCommentEvent" or event["type"] == "PullRequestReviewThreadEvent":
-            prs.append(event["payload"]["pull_request"]["url"])
+            prs.append(event["payload"]["pull_request"]["html_url"])
             activeRepos.add(event['repo']['name'])
 
     print("get issues and prs not in Notional for {} done".format(member))
