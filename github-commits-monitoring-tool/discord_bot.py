@@ -66,7 +66,7 @@ async def report_output():
 @report_output.before_loop
 async def before_report_output():
     for _ in range(60*60*24):  # loop the whole day
-        if datetime.datetime.now().hour == 8 and datetime.datetime.now().minute == 5:  # 24 hour format, CEST time
+        if datetime.datetime.now().hour == 20:  # 24 hour format, CEST time
             print("getting github info")
             return
         await asyncio.sleep(1)# wait a second before looping again. You can make it more 
