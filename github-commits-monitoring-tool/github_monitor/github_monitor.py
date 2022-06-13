@@ -4,8 +4,8 @@ import requests
 # import github_events as github_events
 import github_monitor.commits as commits
 import github_monitor.github_events as github_events
-from datetime import datetime, date, time, timedelta
-import pytz
+import dateutil.parser as parser
+from datetime import datetime, timedelta, timezone
 
 c = configparser.ConfigParser()
 c.read("config.ini", encoding='utf-8')
@@ -51,16 +51,14 @@ def queryContributions():
 
     members = fetchMembers(org)
     # get all Notional active repos within 1 month
-    startTime = datetime.combine(date.today() - timedelta(30), time()).astimezone(pytz.UTC)
-    endTime = datetime.combine(date.today() + timedelta(1), time()).astimezone(pytz.UTC)
+    startTime = parser.parse(datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()) - timedelta(30)
+    endTime = parser.parse(datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()) + timedelta(1)
     activeRepos = github_events.getActiveRepos(org, startTime, endTime)
-    print("Fetched {} repos".format(len(activeRepos)))
 
     # get all commits in 1 day
-    startTime = datetime.combine(date.today() - timedelta(1), time()).astimezone(pytz.UTC)
-    endTime = datetime.combine(date.today(), time()).astimezone(pytz.UTC)
+    startTime = parser.parse(datetime.utcnow().replace(tzinfo=timezone.utc).isoformat()) - timedelta(1)
+    endTime = parser.parse(datetime.utcnow().replace(tzinfo=timezone.utc).isoformat())
 
-    print(members)
     for member in members:
         members[member]["commits"], members[member]["activeRepos"] = commits.getCommits(orgs, startTime, endTime, activeRepos, member)
 

@@ -30,7 +30,7 @@ def getRepoEvents(org: string, startTime: datetime, endTime: datetime, memberCon
         for event in events:
 
             # check time of event
-            event_create_date = parser.isoparse(event['created_at'])
+            event_create_date = parser.parse(event['created_at'])
 
             if event_create_date >= endTime:
                 continue

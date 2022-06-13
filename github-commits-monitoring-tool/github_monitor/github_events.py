@@ -1,6 +1,5 @@
 import configparser
 from datetime import datetime
-from lzma import PRESET_EXTREME
 from dateutil import parser
 import string
 import requests
@@ -30,7 +29,7 @@ def getUserEvents(orgs, startTime: datetime, endTime: datetime, member):
             data = data.json()
             for event in data:
                 # check time of event
-                createdDate = parser.isoparse(event['created_at'])
+                createdDate = parser.parse(event['created_at'])
 
                 if createdDate >= endTime:
                     continue
@@ -69,7 +68,7 @@ def getActiveRepos(org: string, startTime: datetime, endTime: datetime):
 
         for event in events:
             # check time of event
-            createdDate = parser.isoparse(event['created_at'])
+            createdDate = parser.parse(event['created_at'])
 
             if createdDate >= endTime:
                 continue
@@ -82,7 +81,8 @@ def getActiveRepos(org: string, startTime: datetime, endTime: datetime):
         page += 1
     
     #f.close()
-    print("getActiveRepos done")
+    print(repos)
+    print("getActiveRepos done, fetched {} repos".format(len(repos)))
 
     return repos
 
@@ -149,7 +149,7 @@ def getRepoEvents(org: string, startTime: datetime, endTime: datetime, memberCon
         events = res.json()
         for event in events:
             # check time of event
-            createdDate = parser.isoparse(event['created_at'])
+            createdDate = parser.parse(event['created_at'])
             if createdDate > endTime:
                 continue
             elif createdDate < startTime:
