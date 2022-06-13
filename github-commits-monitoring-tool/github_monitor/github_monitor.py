@@ -75,4 +75,4 @@ def queryContributions():
     
     return members
 
-queryContributions()
+# queryContributions()
