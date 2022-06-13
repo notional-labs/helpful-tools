@@ -8,10 +8,10 @@ def compareView(members):
         row = row + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
     footer = "╚══════════════════════╩═════════════╩════════════╩═════════════════╩════════════════╝\n"
     print("{}{}{}".format(header, row, footer))
-    return "{}{}{}".format(header, row, footer)
+    return "```{}{}{}```".format(header, row, footer)
 
 def detailView(members):
-    personal_view = "     ====== PERSONAL VIEW ======\n"
+    personal_view = "```     ====== PERSONAL VIEW ======\n"
     data = ""
 
     for member in members:
@@ -27,7 +27,7 @@ def detailView(members):
             repo = repo + "       + {}\n".format(i)
         data = data + repo + "\n"
     print("{}{}".format(personal_view, data))
-    return "{}{}".format(personal_view, data)
+    return "```{}{}```".format(personal_view, data)
 
 def time_print():
     LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
