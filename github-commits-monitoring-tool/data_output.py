@@ -32,4 +32,4 @@ def detailView(members):
 def time_print():
     LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return "current time = {} in Timezone {}".format(current_time, LOCAL_TIMEZONE)
+    return "Current time: {},  {} Time".format(current_time, LOCAL_TIMEZONE)

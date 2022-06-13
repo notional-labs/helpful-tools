@@ -72,24 +72,3 @@ def queryContributions():
         print()
     
     return members
-def main():
-    members = queryContributions()
-    personal_view = "     ====== PERSONAL VIEW ======\n"
-    data = ""
-
-    for member in members:
-        data = data + " - {}: \n    * Commits: {}\n    * Issues:\n".format(member, members[member]["commits"]["count"])
-        issue = pr = repo = ""
-        for i in members[member]["issues"]:
-            issue = issue + "       + {}\n".format(i)
-        data = data + issue + "    * Pull Requests:\n"
-        for i in members[member]["prs"]:
-            pr = pr + "       + {}\n".format(i)
-        data = data + pr + "    * Active Repos:\n"
-        for i in members[member]["activeRepos"]:
-            repo = repo + "       + {}\n".format(i)
-        data = data + repo + "\n"
-    print("{}{}".format(personal_view, data))
-    return "{}{}".format(personal_view, data)
-
-main()
