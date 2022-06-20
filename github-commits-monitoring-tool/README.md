@@ -25,7 +25,7 @@ There are 2 ways to query all contributions of Notional's members in notional-la
     * Total number of commits of each member
     * Active repos and branches that member is working in
 #### 2. Other org
-  - The bot will scan and filter all events of Notional members in these orgs: **scrtlabs**, **osmosis-labs**, **cosmos**
+  - The bot will scan and filter all events of Notional members in these orgs: **scrtlabs**, **osmosis-labs**, **cosmos**, **Pylons-tech**
   - All `PushEvent` events will be saved, because it contains commits of contributors
 ### B. Issues and PRs query
 1. It will query all public events in these organizations: notional-labs, osmosis-labs, cosmos, scrtlabs
