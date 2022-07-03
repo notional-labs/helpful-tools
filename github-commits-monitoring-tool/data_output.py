@@ -6,11 +6,12 @@ def compareView(members):
     row1 = ""
     row2 = ""
     for member in members:
-        if len(row1) + len(header) <= 1900:
+        if len(row1) + len(header) <= 1800:
             row1 = row1 + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
         else:
             row2 = row2 + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
     footer = "╚══════════════════════╩═════════════╩════════════╩═════════════════╩════════════════╝\n"
+    print(len(row1), len(row2))
     if (row2 == ""):
         print("{}{}{}".format(header, row1, footer))
         return "```{}{}{}```".format(header, row1, footer)
