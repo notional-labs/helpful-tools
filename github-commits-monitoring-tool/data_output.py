@@ -3,12 +3,19 @@ from copy import deepcopy
 
 def compareView(members):
     header = "╔══════════════════════╦═════════════╦════════════╦═════════════════╦════════════════╗\n║        Member        ║   Commits   ║   Issues   ║  Pull Requests  ║  Active Repos  ║\n╠══════════════════════╬═════════════╬════════════╬═════════════════╬════════════════╣\n"
-    row = ""
+    row1 = ""
+    row2 = ""
     for member in members:
-        row = row + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
+        if len(row1) + len(header) <= 1900:
+            row1 = row1 + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
+        else:
+            row2 = row2 + "║ {0:<20} ║     {1:>3}     ║     {2:>3}    ║       {3:>3}       ║       {4:>3}      ║\n".format(member, members[member]["commits"]["count"], len(members[member]["issues"]), len(members[member]["prs"]), len(members[member]["activeRepos"]))
     footer = "╚══════════════════════╩═════════════╩════════════╩═════════════════╩════════════════╝\n"
-    print("{}{}{}".format(header, row, footer))
-    return "```{}{}{}```".format(header, row, footer)
+    if (row2 == ""):
+        print("{}{}{}".format(header, row1, footer))
+        return "```{}{}{}```".format(header, row1, footer)
+    else:
+        return "```{}{}{}```\n\n```{}{}{}```".format(header, row1, footer, header, row2, footer)
 
 def detailView(members):
     personal_view = "     ====== PERSONAL VIEW ======\n"
